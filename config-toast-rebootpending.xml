@@ -44,10 +44,10 @@
         <Text Name="DismissButton">Dismiss</Text> <!-- Text on the DismissButton if enabled -->
         <Text Name="SnoozeButton">Snooze</Text> <!-- Text on the SnoozeButton if enabled -->
         <Text Name="AttributionText">www.aspeninstitute.org</Text>
-        <Text Name="HeaderText">Aspen ITS reminds you</Text>
+        <Text Name="HeaderText">Aspen ITS Reminder</Text>
         <Text Name="TitleText">Your computer needs to restart!</Text>
-        <Text Name="BodyText1">For security and stability reasons, we kindly ask you to restart your computer as soon as possible.</Text>
-        <Text Name="BodyText2">Restarting your computer on a regular basis ensures a secure and stable Windows. Thank you in advance.</Text>
+        <Text Name="BodyText1">For security and compliance purposes, we ask you to restart your computer as soon as possible.</Text>
+        <Text Name="BodyText2"></Text>
         <Text Name="SnoozeText">Click snooze to be reminded again in:</Text>
         <Text Name="DeadlineText">Your deadline is:</Text>
         <Text Name="GreetMorningText">Good morning</Text>
