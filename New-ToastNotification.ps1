@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Create nice toast notifications for the logged on user in Windows 10.
 
@@ -145,7 +145,7 @@
 [CmdletBinding()]
 param(
     [Parameter(HelpMessage='Path to XML Configuration File')]
-    [string]$Config = “https://raw.githubusercontent.com/aspen-institute/its-scripts/main/config-toast-rebootpending.xml?token=GHSAT0AAAAAACWVIW2JD3VBM7JOIRY4VRRIZWOFPWQ”
+    [string]$Config = “https://raw.githubusercontent.com/aspen-institute/its-scripts/main/config-toast-rebootpending.xml?token=GHSAT0AAAAAACWVIW2JT3Q6ZSXLIL7VWI3WZWOX7PQ”
 )
 
 #region Functions
@@ -164,10 +164,7 @@ function Write-Log() {
         [ValidateSet("Error","Warn","Info")]
         [string]$Level = "Info"
     )
-    Begin {
-        # Set VerbosePreference to Continue so that verbose messages are displayed.
-        $VerbosePreference = 'Continue'
-    }
+
     Process {
 		if (Test-Path $Path) {
 			$LogSize = (Get-Item -Path $Path).Length/1MB
@@ -726,9 +723,9 @@ function Display-ToastNotification() {
             # Display the toast notification
             [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($App).Show($ToastXml)
         }
-        Write-Log -Message "All good. Toast notification was displayed"
+
         # Using Write-Output for sending status to IME log when used with Endpoint Analytics in Intune
-        Write-Output "All good. Toast notification was displayed"
+
         if ($CustomAudio -eq "True") {
             Invoke-Command -ScriptBlock {
                 Add-Type -AssemblyName System.Speech
@@ -1965,20 +1962,6 @@ if ($CustomAppEnabled -eq "True") {
     Register-CustomNotificationApp -fAppID $App -fAppDisplayName $CustomAppValue
 }
 
-# Added in version 2.2.0
-# This option is able to prevent multiple toast notification from being displayed in a row
-if ($LimitToastToRunEveryMinutesEnabled -eq "True") {
-    $LastRunTimeOutput = Get-NotificationLastRunTime
-    if (-NOT[string]::IsNullOrEmpty($LastRunTimeOutput)) {
-        if ($LastRunTimeOutput -lt $LimitToastToRunEveryMinutesValue) {
-            Write-Log -Level Error -Message "Toast notification was displayed too recently"
-            Write-Log -Level Error -Message "Toast notification was displayed $LastRunTimeOutput minutes ago and the config.xml is configured to allow $LimitToastToRunEveryMinutesValue minutes intervals"
-            Write-Log -Level Error -Message "This is done to prevent ConfigMgr catching up on missed schedules, and thus display multiple toasts of the same appearance in a row"
-            break   
-        }    
-    }
-}
-
 # Downloading images into user's temp folder if images are hosted online
 if (($LogoImageFileName.StartsWith("https://")) -OR ($LogoImageFileName.StartsWith("http://"))) {
     Write-Log -Message "ToastLogoImage appears to be hosted online. Will need to download the file"
@@ -2447,7 +2430,7 @@ $ADPasswordExpirationGroup = @"
 }
 
 # Add an additional group and text to the toast xml used for notifying about computer uptime. Only add this if the computer uptime exceeds MaxUptimeDays.
-if (($PendingRebootUptimeTextEnabled -eq "True") -AND ($Uptime -gt $MaxUptimeDays)) {
+if (($PendingRebootUptimeTextEnabled -eq "True") -AND ($Uptime -ge $MaxUptimeDays)) {
 $UptimeGroup = @"
         <group>
             <subgroup>     
@@ -2472,11 +2455,11 @@ if (($UpgradeOS -eq "True") -AND ($RunningOS.BuildNumber -lt $TargetOS)) {
     break
 }
 else {
-    Write-Log -Level Warn -Message "Conditions for displaying toast notifications for UpgradeOS are not fulfilled"
+
 }
 
 # Toast used for PendingReboot check and considering OS uptime
-if (($PendingRebootUptime -eq "True") -AND ($Uptime -gt $MaxUptimeDays)) {
+if (($PendingRebootUptime -eq "True") -AND ($Uptime -ge $MaxUptimeDays)) {
     Write-Log -Message "Toast notification is used in regards to pending reboot. Uptime count is greater than $MaxUptimeDays"
     Display-ToastNotification
     # Stopping script. No need to accidently run further toasts
