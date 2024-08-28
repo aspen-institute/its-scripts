@@ -43,7 +43,7 @@
 		<Text Name="ActionButton2">Learn More</Text>  <!-- Text on the ActionButton if enabled -->
         <Text Name="DismissButton">Dismiss</Text> <!-- Text on the DismissButton if enabled -->
         <Text Name="SnoozeButton">Snooze</Text> <!-- Text on the SnoozeButton if enabled -->
-        <Text Name="AttributionText">www.aspeninstitute.org</Text>
+        <Text Name="AttributionText">www.espn.org</Text>
         <Text Name="HeaderText">Aspen ITS Reminder</Text>
         <Text Name="TitleText">Your computer needs to restart!</Text>
         <Text Name="BodyText1">For security and compliance purposes, we ask you to restart your computer as soon as possible.</Text>
